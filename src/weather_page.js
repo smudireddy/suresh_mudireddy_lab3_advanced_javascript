@@ -26,6 +26,7 @@ function displayWetherDetails(weather) {
     console.log(weather);
 
    let cityNode = document.getElementById("loc_city_country");
+   console.log(cityNode);
    cityNode.innerText = `${weather.name}, ${weather.country}`;
 
     let now = new Date();
@@ -33,10 +34,13 @@ function displayWetherDetails(weather) {
     dateNode.innerText = datebuilder(now);
 
     let temperatureNode = document.querySelector('.current #temperature');
-    let weatherTypeNode = document.querySelector('.current #weather_type');
-    let wetherRangeNode = document.querySelector('.current #wether_range');
+    temperatureNode.innerHTML = `${Math.round(weather.main.temp)}<span>°c</span>`;
 
-    
+    let weatherTypeNode = document.querySelector('.current #weather_type');
+    weatherTypeNode.innerText = `${weather.weather[0].main}`;
+
+    let wetherRangeNode = document.querySelector('.current #wether_range');
+    wetherRangeNode.innerText = `${Math.round(weather.main.temp_min)}°c / ${Math.round(weather.main.temp_max)}°c`;
 }
 
 function datebuilder(d) {

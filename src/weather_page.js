@@ -23,9 +23,31 @@ function fetchWetherDetailsOfTheCity(cityName) {
 
 function displayWetherDetails(weather) {
 
-    console.log(wether);
+    console.log(weather);
 
-   let city = document.getElementById("loc_city_country");
-    city.innerText = `${wether.name}, ${wether.country}`;
+   let cityNode = document.getElementById("loc_city_country");
+   cityNode.innerText = `${weather.name}, ${weather.country}`;
 
+    let now = new Date();
+    let dateNode = document.getElementById("weather_stats_date");
+    dateNode.innerText = datebuilder(now);
+
+    let temperatureNode = document.querySelector('.current #temperature');
+    let weatherTypeNode = document.querySelector('.current #weather_type');
+    let wetherRangeNode = document.querySelector('.current #wether_range');
+
+    
+}
+
+function datebuilder(d) {
+    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "Septemebr", "October", "November", "December"];
+
+    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    let day = days[d.getDay()];
+    let date = d.getDate();
+    let month = months[d.getMonth()];
+    let year = d.getFullYear();
+
+    return `${day} ${month} ${year}`;
 }

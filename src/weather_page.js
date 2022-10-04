@@ -1,54 +1,30 @@
 const weather_api = {
     appKey: "2701ccad064c6c80e7248d42c6820cd9",
-    geoBaseUrl: "http://api.openweathermap.org/geo/1.0/",
     weatherBaseUrl: "https://api.openweathermap.org/data/2.5/"
 }
 
-let cityGeoDetail = null;
 const citySearch = document.querySelector('.city_name_input');
 citySearch.addEventListener('keypress', searchCity);
 
 function searchCity(evt) {
     if (evt.keyCode == 13) {
-       console.log(citySearch.value);
        const cityName = citySearch.value;
-       fetchGeoDetailsOfTheCity(cityName);
+       fetchWeatherDetailsOfTheCity(cityName);
     }
 }
 
-function fetchGeoDetailsOfTheCity(cityName) {
-    fetch(`${weather_api.geoBaseUrl}direct?q=${cityName}&limit=1&APPID=${weather_api.appKey}`).then(weather => {
+function fetchWeatherDetailsOfTheCity(cityName) {
+    fetch(`${weather_api.weatherBaseUrl}weather?q=${cityName}&units=metric&APPID=${weather_api.appKey}`).then(weather => {
         console.log(weather);
         return weather.json();
-    }).then(fetchWetherDetailsOfTheCity);
-}
-
-function fetchWetherDetailsOfTheCity(cityDetails) {
-    
-    cityGeoDetail = cityDetails[0];
-
-    console.log(cityGeoDetail);
-
-    const lat =  cityGeoDetail.lat;
-    const lon =  cityGeoDetail.lon;
-    console.log(`${lat} => ${lon}`);
-
-    fetch(`${weather_api.weatherBaseUrl}weather?lat=${lat}&lon=${lon}&units=metric&APPID=${weather_api.appKey}`).then(weather => {
-
-        let resp = weather.json();
-        console.log(resp);
-        return resp;
-
     }).then(displayWetherDetails);
 }
 
 function displayWetherDetails(weatherObj) {
 
-   console.log(weatherObj);
-   
    let cityNode = document.getElementById("loc_city_country");
    console.log(cityNode);
-   cityNode.innerText = `${cityGeoDetail.name}, ${cityGeoDetail.country}`;
+   cityNode.innerText = `${weatherObj.name}, ${weatherObj.sys.country}`;
 
     let now = new Date();
     let dateNode = document.getElementById("weather_stats_date");

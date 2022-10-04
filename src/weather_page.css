@@ -5,7 +5,11 @@ body {
   }
 
 .wether-display-container {
-    background-image: url("../images/mountains_nature_wallpaper.jpg");
+
+    background-image:
+    linear-gradient(to bottom, rgba(74, 74, 79, 0.3), rgba(79, 75, 79, 0.6)),
+    url('../images/mountains_nature_wallpaper.jpg');
+
     height: 500px;
     width: 80%;
     margin: auto;
@@ -28,9 +32,9 @@ body {
     padding: 10px 15px;
     border: none;
     outline: none;
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.3);
     border-radius: 16px 0px 16px 0px;
-    border-bottom: 3px orangered;
+    border-bottom: 3px solid goldenrod;
     color: #313131;
     font-size: 20px;
     font-weight: 300;

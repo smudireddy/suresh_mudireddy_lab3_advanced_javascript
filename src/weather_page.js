@@ -4,6 +4,7 @@ const weather_api = {
     weatherBaseUrl: "https://api.openweathermap.org/data/2.5/"
 }
 
+let cityGeoDetail = null;
 const citySearch = document.querySelector('.city_name_input');
 citySearch.addEventListener('keypress', searchCity);
 
@@ -24,42 +25,43 @@ function fetchGeoDetailsOfTheCity(cityName) {
 
 function fetchWetherDetailsOfTheCity(cityDetails) {
     
-    const geoDetail = cityDetails[0];
+    cityGeoDetail = cityDetails[0];
 
-    console.log(geoDetail);
+    console.log(cityGeoDetail);
 
-    const lat =  geoDetail.lat;
-    const lon =  geoDetail.lon;
+    const lat =  cityGeoDetail.lat;
+    const lon =  cityGeoDetail.lon;
     console.log(`${lat} => ${lon}`);
 
-    fetch(`${weather_api.weatherBaseUrl}weather?lat=${lat}&lon=${lon}&APPID=${weather_api.appKey}`).then(weather => {
-        console.log("=====> " + weather);
-        return weather.json();
+    fetch(`${weather_api.weatherBaseUrl}weather?lat=${lat}&lon=${lon}&units=metric&APPID=${weather_api.appKey}`).then(weather => {
+
+        let resp = weather.json();
+        console.log(resp);
+        return resp;
+
     }).then(displayWetherDetails);
 }
 
-function displayWetherDetails(weatherList) {
+function displayWetherDetails(weatherObj) {
 
-   const weather = weatherList[0];
-
-   console.log(weather);
-
+   console.log(weatherObj);
+   
    let cityNode = document.getElementById("loc_city_country");
    console.log(cityNode);
-   cityNode.innerText = `${weather.name}, ${weather.country}`;
+   cityNode.innerText = `${cityGeoDetail.name}, ${cityGeoDetail.country}`;
 
     let now = new Date();
     let dateNode = document.getElementById("weather_stats_date");
     dateNode.innerText = datebuilder(now);
 
     let temperatureNode = document.querySelector('.current #temperature');
-    temperatureNode.innerHTML = `${Math.round(weather.temp)}<span>°c</span>`;
+    temperatureNode.innerHTML = `${Math.round(weatherObj.main.temp)}<span>°c</span>`;
 
     let weatherTypeNode = document.querySelector('.current #weather_type');
-    weatherTypeNode.innerText = `${weather.weather[0]}`;
+    weatherTypeNode.innerText = `${weatherObj.weather[0].main} - \(${weatherObj.weather[0].description}\)`;
 
     let wetherRangeNode = document.querySelector('.current #wether_range');
-    wetherRangeNode.innerText = `${Math.round(weather.temp_min)}°c / ${Math.round(weather.temp_max)}°c`;
+    wetherRangeNode.innerText = `${Math.round(weatherObj.main.temp_min)}°c / ${Math.round(weatherObj.main.temp_max)}°c`;
 }
 
 function datebuilder(d) {
